@@ -11,13 +11,13 @@ errors={}
 
 f=open('syslog.log','r')
 
-errorfile = 'error_message_csv'
+errorfile = 'error_message.csv'
 userfile='user_statistics.csv'
 
 
 for log in f:
 
-	result=re.search(r"ticky: ([\w+]*):? ([\w ]*) [\[0-9#]*\]?]? ?\((.*)\)$", log)
+	result=re.search(r"ticky: ([\w+]*):? ([\w' ]*) [\[0-9#]*\]?]? ?\((.*)\)$", log)
 	if result.group(2) not in errors.keys():
 		errors[result.group(2)]=0
 	errors[result.group(2)] +=1
@@ -35,7 +35,7 @@ errors =sorted(errors.items(), key = operator.itemgetter(1), reverse = True)
 per_user=sorted(per_user.items())
 
 f.close()
-errors.inser(0, ('Error', 'Count'))
+errors.insert(0, ('Error', 'Count'))
 
 f=open(errorfile, 'w')
 
@@ -48,7 +48,7 @@ f=open(userfile, 'w')
 
 f.write("Username,INFO,ERROR\n")
 
-for stat in per_user:
+for stats in per_user:
 	a, b=stats
 	f.write(str(a)+','+str(b["INFO"])+','+str(b["ERROR"])+'\n')
 
